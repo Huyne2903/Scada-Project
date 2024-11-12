@@ -1,0 +1,484 @@
+<html> 
+
+    <!-- Phần Header của Website --> 
+
+    <head> 
+           <!-- ////////////// GỌI CÁC CSS //////////////  --> 
+
+            <link rel="stylesheet" href= "CSS/slidebar.css"> 
+            <link rel="stylesheet" href= "CSS/scr_Auto.css"> 
+            <link rel="stylesheet" href= "CSS/scr_Manu.css">
+            <link rel="stylesheet" href= "CSS/scr_mysql.css">
+            <link rel="stylesheet" href= "CSS/scr_Dothi.css">
+            <link rel="stylesheet" href= "CSS/login.css"> 
+            <title>Scada Hệ Thống Tưới Tiêu Tự Đông</title> 
+            <script src = "socket.io/socket.io.js"></script> 
+            <script src = "js/FC1_Common.js"></script>
+            <script src = "js/FC2_scr_Auto.js"></script>
+            <script src = "js/FC3_scr_mysql.js"></script>
+            <script src = "js/jquery-3.7.1.min.js"></script>
+            <script src = "js/FileSaver.js"></script>
+            <script src = "js/plotly-2.8.3.min.js"></script>
+            <script src = "js/FC4_UserManagement.js"></script> 
+
+            <script> 
+
+            var socket = io("localhost:3000") // IP tĩnh (hoặc IP động, hoặc localhost) 
+            
+        </script> 
+            <style>
+                #scr_Auto, #scr_manu, #scr_mtsql,#scr_Dothi {
+                visibility: hidden; /* Ẩn tất cả các màn hình */
+                display: none; /* Ẩn tất cả các màn hình */
+            }
+            
+            #scr_Auto { 
+                visibility: visible; /* Hiển thị màn hình chính mặc định */
+                display: block; /* Hiển thị màn hình chính */
+            }
+                </style>
+                <!-- ////////////// CHƯƠNG TRÌNH ĐĂNG NHẬP HỆ THỐNG //////////////  --> 
+
+<div id="div_login"> 
+    <div id="id01" class="modal"> 
+        <form id = "modal-content1" class="modal-content animate"> 
+        <div id = "img_container" class="imgcontainer"> 
+            <span id = "closebtt" onclick="document.getElementById('id01').style.display='none'; logout();" class="close" title="Close Modal">×</span> 
+            <img decoding="async" id = "img_avatar" src="images/user.png" alt="Avatar" class="avatar"> 
+        </div> 
+        <div id = "log_container" class="container"> 
+            <label for="uname"><b>Username</b></label> 
+            <input id = "inputuser" type="text" placeholder="Enter Username" name="uname" required> 
+            <label for="psw"><b>Password</b></label> 
+            <input id = "inputpass" type="password" placeholder="Enter Password" name="psw" required>
+            <button id = "bttlogin1" type="button" onclick="login();">Login</button> 
+            <label> 
+            <input type="checkbox" checked="checked" name="remember"> Remember me 
+            </label> 
+        </div> 
+        <div id = "login_container" class="container" style="background-color:#f1f1f1"> 
+            <button id = "bttcancle" type="button" onclick="document.getElementById('id01').style.display='none'; logout();" class="cancelbtn">Cancel</button> 
+            <span id = "psw" class="psw">Forgot <a href="#">password?</a></span> 
+        </div> 
+        </form> 
+    </div> 
+</div> 
+    </head> 
+    <body> 
+    <!-- ////////////// Code cho slidebar////////////// --> 
+
+        <div id = "slidebar">
+            <!--Nút chọn màn hình Auto--> 
+            <button id="btt_Screen_Auto" onclick=" 
+                fn_ScreenChange('scr_Auto','scr_mysql','scr_Manu','scr_Dothi'); 
+            ">TỰ ĐỘNG</button> 
+            <!--Nút chọn màn hình Manu--> 
+            <button id="btt_Screen_Manu" onclick=" 
+                fn_ScreenChange('scr_Manu','scr_mysql','scr_Auto','scr_Dothi'); 
+            ">BẰNG TAY</button>
+            <!--Nút chọn màn hình lịch sử--> 
+            <button id="btt_Screen_mysql" onclick=" 
+                fn_ScreenChange('scr_mysql','scr_Manu','scr_Auto','scr_Dothi');
+                fn_Table01_SQL_Show(); 
+            ">Lịch Sử Hoạt Động</button> 
+            <!--Nút chọn màn hình Manu--> 
+            <button id="btt_Screen_Dothi" onclick=" 
+                fn_ScreenChange('scr_Dothi','scr_Manu','scr_mysql','scr_Auto'); 
+            ">Đồ Thị</button>
+            <!--Nút đăng nhập/đăng xuất--> 
+            <button id="bttLogin" class="btn" onclick="login(); 
+            window.location.reload(); 
+            ">ĐĂNG NHẬP</button> 
+            <button id="bttLogout" class="btn" onclick="logout(); 
+            ">ĐĂNG XUẤT</button> 
+        </div>
+        <!-- //////////////Code cho màn hình Đồ Thị////////////// --> 
+    <div id="scr_Dothi">
+    <script>
+    var data_level = 0;
+    var data_humidity = 0;
+    var data_pressure = 0;
+
+    // Nhận dữ liệu từ server
+    socket.on("Act_CB_level", function(data) {
+        data_level = data;
+    });
+    socket.on("Act_CB_humidity", function(data) {
+        data_humidity = data;
+    });
+    socket.on("Act_CB_pressure", function(data) {
+        data_pressure = data;
+    });
+
+    // Tạo đồ thị với ba dữ liệu
+    Plotly.newPlot('scr_Dothi', [
+        {
+            y: [data_level],
+            name: 'Level',
+            type: 'line'
+        },
+        {
+            y: [data_humidity],
+            name: 'Humidity',
+            type: 'line'
+        },
+        {
+            y: [data_pressure],
+            name: 'Pressure',
+            type: 'line'
+        }
+    ], {
+        yaxis: {
+            range: [0, 100] // Thay đổi giá trị theo biên độ mong muốn
+        }
+    });
+
+    var cnt = 0;
+    setInterval(function() {
+        Plotly.extendTraces('scr_Dothi', {
+            y: [[data_level], [data_humidity], [data_pressure]]
+        }, [0, 1, 2]);
+        cnt++;
+        if (cnt > 300) {
+            Plotly.relayout('scr_Dothi', {
+                xaxis: {
+                    range: [cnt - 300, cnt]
+                }
+            });
+        }
+    }, 1000);
+</script>
+</div>
+
+<div>
+
+    <!-- //////////////Code cho màn hình lịch sử hoạt động////////////// --> 
+        <div id = "scr_mysql"> 
+
+             <!--hình nền mysql-->
+             <img src="images/scr_SQL.PNG" alt="Image description" class="custom-image_SQL">
+
+    <!--Table display--> 
+            <div id = "div_Table_01"> 
+                <table id="table_01" > 
+                    <thead> 
+                        <tr> 
+                            <th>Thời gian</th> 
+                            <th>Cảm biến mức</th> 
+                            <th>Cảm biến độ ẩm</th>
+                            <th>Cảm biến áp suất</th>  
+                        </tr> 
+                    </thead> 
+                </table> 
+            </div>
+            <!--Date time piker--> 
+            <label id="lb_Search_Start">Từ:</label> 
+            <input id="dtpk_Search_Start" type="datetime-local"> 
+            <label id="lb_Search_End">Đến:</label> 
+            <input id="dtpk_Search_End" type="datetime-local"> 
+            <!--Nút tìm kiếm--> 
+            <button id="btt_Search" class="btn" onclick="fn_SQL_By_Time();"></i> TÌM KIẾM</button>
+            <!--Nút Xuất báo cáo Excel--> 
+            <button id="btt_Excel" class="btn" onclick="fn_excel();"></i> BÁO CÁO</button>   
+        </div> 
+        
+    <!-- //////////////Code cho màn hình tự động////////////// --> 
+        <div id = "scr_Auto">
+
+            <!--hình nền Auto-->
+            <img src="images/scr_Auto.PNG" alt="Image description" class="custom-image_Auto">
+            
+            <!--Hình Symbol CB_level -->
+            <img id = "Sym_scrAuto_CB_level" ><script> fn_SymbolStatus("Sym_scrAuto_CB_level", "Sensorlevel1", "status_CB_level") </script>
+            <!--Hình Symbol CB_humidity -->
+            <img id = "Sym_scrAuto_CB_humidity" ><script> fn_SymbolStatus("Sym_scrAuto_CB_humidity", "Humiditysensor1", "status_CB_humidity") </script>
+            <!--Hình Symbol CB_pressure -->
+            <img id = "Sym_scrAuto_CB_pressure" ><script> fn_SymbolStatus("Sym_scrAuto_CB_pressure", "Sensorpressure1", "status_CB_pressure") </script>
+     
+            <!--Hình Symbol Bom1 --> 
+            <img id = "Sym_scrAuto_Motor1" ><script> fn_SymbolStatus("Sym_scrAuto_Motor1", "Motor1", "status_DC_Tron") </script>
+            <!--Hình Symbol Bom2 --> 
+            <img id = "Sym_scrAuto_Motor2" ><script> fn_SymbolStatus("Sym_scrAuto_Motor2", "Motor1", "status_DC_2") </script>
+            <!--Hình Symbol Bom3 --> 
+            <img id = "Sym_scrAuto_Motor3" ><script> fn_SymbolStatus("Sym_scrAuto_Motor3", "Motor1", "status_DC_3") </script>   
+            <!--Hình Symbol Bom4 --> 
+            <img id = "Sym_scrAuto_Motor4" ><script> fn_SymbolStatus("Sym_scrAuto_Motor4", "Motor1", "status_DC_4") </script>
+            <!--Hình Symbol Bom5 --> 
+            <img id = "Sym_scrAuto_Motor5" ><script> fn_SymbolStatus("Sym_scrAuto_Motor5", "Motor1", "status_DC_5") </script>  
+            <!--Hình Symbol Bom6 --> 
+            <img id = "Sym_scrAuto_Motor6" ><script> fn_SymbolStatus("Sym_scrAuto_Motor6", "Motor1", "status_DC_6") </script>
+            <!--Hình Symbol Bom7 --> 
+            <img id = "Sym_scrAuto_Motor7" ><script> fn_SymbolStatus("Sym_scrAuto_Motor7", "Motor1", "status_DC_7") </script>
+            <!--Hình Symbol Bom8 --> 
+            <img id = "Sym_scrAuto_Motor8" ><script> fn_SymbolStatus("Sym_scrAuto_Motor8", "Motor1", "status_DC_8") </script>  
+            <!--Hình Symbol Bom9 --> 
+            <img id = "Sym_scrAuto_Motor9" ><script> fn_SymbolStatus("Sym_scrAuto_Motor9", "Motor1", "status_DC_9") </script>
+            <!--Hình Symbol Bom10 --> 
+            <img id = "Sym_scrAuto_Motor10" ><script> fn_SymbolStatus("Sym_scrAuto_Motor10", "Motor1", "status_DC_10") </script>   
+
+
+
+
+
+
+
+
+
+            <!-- //////////////Nút nhấn điều khiển////////////// --> 
+            <!--Chọn chế độ tự động--> 
+            <!--<button id="btt_scrAuto_Auto" onclick= "socket.emit('cmd_Mode_Auto', true,false);">Tự Động</button> 
+            <script>fn_btt_Color('Q_Lamp_Auto', 'btt_scrAuto_Auto', 'rgb(0, 255, 15)', 'gray')</script>
+            
+            <!-<Bật bơm 1-->
+            <button id="btt_scrAuto_Auto" onmousedown="socket.emit('cmd_Mode_Auto', true);" onmouseup="socket.emit('cmd_Mode_Auto', false);">Tự Động</button>
+            <script>fn_btt_Color('Q_Lamp_Auto', 'btt_scrAuto_Auto', 'green', 'gray')</script>
+
+
+            <!--Chọn chế độ bằng tay--> 
+    
+            <button id="btt_scrAuto_Manu" onmousedown="socket.emit('cmd_Mode_Manu', true);" onmouseup="socket.emit('cmd_Mode_Manu', false);">Bằng Tay</button>
+            <script>fn_btt_Color('Q_Lamp_Manu', 'btt_scrAuto_Manu',  'rgb(200, 217, 11)', 'gray')</script>
+
+            <!--Xác nhận--> 
+            <button id="btt_scrAuto_Confirm" onmousedown="socket.emit('cmd_Confirm', true);" onmouseup="socket.emit('cmd_Confirm', false);">Reset</button> 
+             
+            <!-- //////////////Hiển thị dữ liệu IO field////////////// --> 
+            
+            <!--Giá trị thực tế Bom1-->
+            <input id="tbx_act_DC_1_Auto" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_1", "tbx_act_DC_1_Auto", 0)</script>
+            <!--Giá trị thực tế Bom2-->
+            <input id="tbx_act_DC_2_Auto" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_2", "tbx_act_DC_2_Auto", 0)</script>
+            <!--Giá trị thực tế Bom3-->
+            <input id="tbx_act_DC_3_Auto" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_3", "tbx_act_DC_3_Auto", 0)</script>
+            <!--Giá trị thực tế Bom4-->
+            <input id="tbx_act_DC_4_Auto" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_4", "tbx_act_DC_4_Auto", 0)</script>
+            <!--Giá trị thực tế Bom5-->
+            <input id="tbx_act_DC_5_Auto" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_5", "tbx_act_DC_5_Auto", 0)</script>
+            <!--Giá trị thực tế Bom6-->
+            <input id="tbx_act_DC_6_Auto" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_6", "tbx_act_DC_6_Auto", 0)</script>
+            <!--Giá trị thực tế Bom7-->
+            <input id="tbx_act_DC_7_Auto" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_7", "tbx_act_DC_7_Auto", 0)</script>
+            <!--Giá trị thực tế Bom8-->
+            <input id="tbx_act_DC_8_Auto" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_8", "tbx_act_DC_8_Auto", 0)</script>
+            <!--Giá trị thực tế Bom9-->
+            <input id="tbx_act_DC_9_Auto" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_9", "tbx_act_DC_9_Auto", 0)</script>
+            <!--Giá trị thực tế Bom10-->
+            <input id="tbx_act_DC_10_Auto" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_10", "tbx_act_DC_10_Auto", 0)</script>
+
+              <!--Giá trị thực tế CB_level-->
+            <input id="tbx_act_CB_level_Auto" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_CB_level", "tbx_act_CB_level_Auto", 0)</script>
+              <!--Giá trị thực tế CB_humidity-->
+              <input id="tbx_act_CB_humidity_Auto" disabled="disabled" type="text" /> 
+              <script>fn_IOFieldDataShow("Act_CB_humidity", "tbx_act_CB_humidity_Auto",0)</script>
+              <!--Giá trị thực tế CB_pressure-->
+              <input id="tbx_act_CB_pressure_Auto" disabled="disabled" type="text" /> 
+              <script>fn_IOFieldDataShow("Act_CB_pressure", "tbx_act_CB_pressure_Auto",0)</script>
+             
+
+
+            <!--CÀI ĐẶT THÔNG SỐ AUTO -->
+            <!--Cài đặt thông số 1 -->
+            <input id="tbx_set_DC1" disabled="disabled" type="text" /> 
+            <script>fn_Auto_IOField_IO("Setting_DC_1", "tbx_set_DC1", 1)</script>
+            <!--Cài đặt thông số 2 -->
+            <input id="tbx_set_DC2" disabled="disabled" type="text" /> 
+            <script>fn_Auto_IOField_IO("Setting_DC_2", "tbx_set_DC2", 1)</script>
+            <!--Cài đặt thông số 3 -->
+            <input id="tbx_set_DC3" disabled="disabled" type="text" /> 
+            <script>fn_Auto_IOField_IO("Setting_DC_3", "tbx_set_DC3", 1)</script>
+            <!--Cài đặt thông số 4 -->
+            <input id="tbx_set_DC4" disabled="disabled" type="text" /> 
+            <script>fn_Auto_IOField_IO("Setting_DC_4", "tbx_set_DC4", 1)</script>
+            <!--Cài đặt thông số 5 -->
+            <input id="tbx_set_DC5" disabled="disabled" type="text" /> 
+            <script>fn_Auto_IOField_IO("Setting_DC_5", "tbx_set_DC5", 1)</script>
+            <!--Cài đặt thông số 6 -->
+            <input id="tbx_set_DC6" disabled="disabled" type="text" /> 
+            <script>fn_Auto_IOField_IO("Setting_DC_6", "tbx_set_DC6", 1)</script>
+            <!--Cài đặt thông số 7 -->
+            <input id="tbx_set_DC7" disabled="disabled" type="text" /> 
+            <script>fn_Auto_IOField_IO("Setting_DC_7", "tbx_set_DC7", 1)</script>
+            <!--Cài đặt thông số 8 -->
+            <input id="tbx_set_DC8" disabled="disabled" type="text" /> 
+            <script>fn_Auto_IOField_IO("Setting_DC_8", "tbx_set_DC8", 1)</script>
+            <!--Cài đặt thông số 9 -->
+            <input id="tbx_set_DC9" disabled="disabled" type="text" /> 
+            <script>fn_Auto_IOField_IO("Setting_DC_9", "tbx_set_DC9", 1)</script>
+            <!--Cài đặt thông số 1 -->
+            <input id="tbx_set_DC10" disabled="disabled" type="text" /> 
+            <script>fn_Auto_IOField_IO("Setting_DC_10", "tbx_set_DC10", 1)</script>
+
+                
+            <!-- //////////////Sửa và Lưu dữ liệu////////////// --> 
+            <!--Nút nhấn sửa/lưu - Lưu ý: Nút nhấn lưu phải nằm trước nút nhấn sửa--> 
+            <button id="btt_scr_Auto_Save" onclick= "fn_Auto_SaveBtt('btt_scr_Auto_Save','btt_scr_Auto_Edit')">LƯU</button> 
+            <button id="btt_scr_Auto_Edit" onclick= "fn_Auto_EditBtt('btt_scr_Auto_Save','btt_scr_Auto_Edit')">SỬA</button> 
+
+
+        </div> 
+    
+
+        <!-- //////////////Code cho màn hình bằng tay////////////// --> 
+        <div id = "scr_Manu"> 
+
+            <!--hình nền Manu-->
+            <img src="images/scr_Manu.PNG" alt="Image description" class="custom-image_Manu">
+        
+            <!-- Hình Symbol Cảm biến -->
+             <!--Hình Symbol CB_level -->
+            <img id = "Sym_scrManu_CB_level" ><script> fn_SymbolStatus("Sym_scrManu_CB_level", "Sensorlevel1", "status_CB_level") </script>
+            <!--Hình Symbol CB_humidity -->
+            <img id = "Sym_scrManu_CB_humidity" ><script> fn_SymbolStatus("Sym_scrManu_CB_humidity", "Humiditysensor1", "status_CB_humidity") </script>
+            <!--Hình Symbol CB_pressure -->
+            <img id = "Sym_scrManu_CB_pressure" ><script> fn_SymbolStatus("Sym_scrManu_CB_pressure", "Sensorpressure1", "status_CB_pressure") </script>
+         
+
+            
+            <!--Hình Symbol Bom1 --> 
+            <img id = "Sym_scrManu_Motor1" ><script> fn_SymbolStatus("Sym_scrManu_Motor1", "Motor1", "status_DC_Tron") </script>
+            <!--Hình Symbol Bom2 --> 
+            <img id = "Sym_scrManu_Motor2" ><script> fn_SymbolStatus("Sym_scrManu_Motor2", "Motor1", "status_DC_2") </script>
+            <!--Hình Symbol Bom3 --> 
+            <img id = "Sym_scrManu_Motor3" ><script> fn_SymbolStatus("Sym_scrManu_Motor3", "Motor1", "status_DC_3") </script>   
+            <!--Hình Symbol Bom4 --> 
+            <img id = "Sym_scrManu_Motor4" ><script> fn_SymbolStatus("Sym_scrManu_Motor4", "Motor1", "status_DC_4") </script>
+            <!--Hình Symbol Bom5 --> 
+            <img id = "Sym_scrManu_Motor5" ><script> fn_SymbolStatus("Sym_scrManu_Motor5", "Motor1", "status_DC_5") </script>  
+            <!--Hình Symbol Bom6 --> 
+            <img id = "Sym_scrManu_Motor6" ><script> fn_SymbolStatus("Sym_scrManu_Motor6", "Motor1", "status_DC_6") </script>
+            <!--Hình Symbol Bom7 --> 
+            <img id = "Sym_scrManu_Motor7" ><script> fn_SymbolStatus("Sym_scrManu_Motor7", "Motor1", "status_DC_7") </script>
+            <!--Hình Symbol Bom8 --> 
+            <img id = "Sym_scrManu_Motor8" ><script> fn_SymbolStatus("Sym_scrManu_Motor8", "Motor1", "status_DC_8") </script>  
+            <!--Hình Symbol Bom9 --> 
+            <img id = "Sym_scrManu_Motor9" ><script> fn_SymbolStatus("Sym_scrManu_Motor9", "Motor1", "status_DC_9") </script>
+            <!--Hình Symbol Bom10 --> 
+            <img id = "Sym_scrManu_Motor10" ><script> fn_SymbolStatus("Sym_scrManu_Motor10", "Motor1", "status_DC_10") </script>  
+           
+
+
+            <!-- //////////////Nút nhấn điều khiển////////////// --> 
+            <!--Chọn chế độ tự động--> 
+            <button id="btt_scrManu_Auto" onclick= "socket.emit('cmd_Mode_Auto', true);">Tự Động</button> 
+            <script>fn_btt_Color('Q_Lamp_Auto', 'btt_scrManu_Auto', 'rgb(0, 255, 15)', 'gray')</script> 
+            <!--Chọn chế độ bằng tay--> 
+            <button id="btt_scrManu_Manu" onclick= "socket.emit('cmd_Mode_Manu', true);">Bằng Tay</button> 
+            <script>fn_btt_Color('Q_Lamp_Manu', 'btt_scrManu_Manu', 'rgb(200, 217, 11)', 'gray')</script>
+             
+            <!--Cum1 Relay1-->
+            <!-- <button id="btt_scrManu_Relay1" onclick= "socket.emit('cmd_Manu_Relay1', true);">Relay1</button> -->
+            <button id="btt_scrManu_Relay1" onmousedown="socket.emit('cmd_Manu_Relay1', true);" onmouseup="socket.emit('cmd_Manu_Relay1', false);">Relay1</button>
+            
+            <!--Cum1 Relay2-->
+            <!-- <button id="btt_scrManu_Relay2" onclick= "socket.emit('cmd_Manu_Relay2', true);">Relay2</button> -->
+            <button id="btt_scrManu_Relay2" onmousedown="socket.emit('cmd_Manu_Relay2', true);" onmouseup="socket.emit('cmd_Manu_Relay2', false);">Relay2</button>
+
+
+            <!--BƠm1 Open--> 
+            <button id="btt_scrManu_DC_Run" onmousedown="socket.emit('cmd_Manu_DC_Run', true);" onmouseup="socket.emit('cmd_Manu_DC_Run', false);">Chạy</button>
+            <!--Bơm1 Close--> 
+            <button id="btt_scrManu_DC_Stop" onmousedown="socket.emit('cmd_Manu_DC_Stop', true);" onmouseup="socket.emit('cmd_Manu_DC_Stop', false);">Dừng</button>
+            
+            <!--BƠm2 Open--> 
+            <button id="btt_scrManu_DC2_Run" onmousedown="socket.emit('cmd_Manu_DC2_Run', true);" onmouseup="socket.emit('cmd_Manu_DC2_Run', false);">Chạy</button>
+            <!--Bơm2 Close--> 
+            <button id="btt_scrManu_DC2_Stop" onmousedown="socket.emit('cmd_Manu_DC2_Stop', true);" onmouseup="socket.emit('cmd_Manu_DC2_Stop', false);">Dừng</button>
+
+            <!--BƠm3 Open--> 
+            <button id="btt_scrManu_DC3_Run" onmousedown="socket.emit('cmd_Manu_DC3_Run', true);" onmouseup="socket.emit('cmd_Manu_DC3_Run', false);">Chạy</button>
+            <!--Bơm3 Close--> 
+            <button id="btt_scrManu_DC3_Stop" onmousedown="socket.emit('cmd_Manu_DC3_Stop', true);" onmouseup="socket.emit('cmd_Manu_DC3_Stop', false);">Dừng</button>
+
+            <!--BƠm4 Open--> 
+            <button id="btt_scrManu_DC4_Run" onmousedown="socket.emit('cmd_Manu_DC4_Run', true);" onmouseup="socket.emit('cmd_Manu_DC4_Run', false);">Chạy</button>
+            <!--Bơm4 Close--> 
+            <button id="btt_scrManu_DC4_Stop" onmousedown="socket.emit('cmd_Manu_DC4_Stop', true);" onmouseup="socket.emit('cmd_Manu_DC4_Stop', false);">Dừng</button>
+
+            <!--BƠm5 Open--> 
+            <button id="btt_scrManu_DC5_Run" onmousedown="socket.emit('cmd_Manu_DC5_Run', true);" onmouseup="socket.emit('cmd_Manu_DC5_Run', false);">Chạy</button>
+            <!--Bơm5 Close--> 
+            <button id="btt_scrManu_DC5_Stop" onmousedown="socket.emit('cmd_Manu_DC5_Stop', true);" onmouseup="socket.emit('cmd_Manu_DC5_Stop', false);">Dừng</button>
+
+            <!--BƠm6 Open--> 
+            <button id="btt_scrManu_DC6_Run" onmousedown="socket.emit('cmd_Manu_DC6_Run', true);" onmouseup="socket.emit('cmd_Manu_DC6_Run', false);">Chạy</button>
+            <!--Bơm6 Close--> 
+            <button id="btt_scrManu_DC6_Stop" onmousedown="socket.emit('cmd_Manu_DC6_Stop', true);" onmouseup="socket.emit('cmd_Manu_DC6_Stop', false);">Dừng</button>
+
+            <!--BƠm7 Open--> 
+            <button id="btt_scrManu_DC7_Run" onmousedown="socket.emit('cmd_Manu_DC7_Run', true);" onmouseup="socket.emit('cmd_Manu_DC7_Run', false);">Chạy</button>
+            <!--Bơm7 Close--> 
+            <button id="btt_scrManu_DC7_Stop" onmousedown="socket.emit('cmd_Manu_DC7_Stop', true);" onmouseup="socket.emit('cmd_Manu_DC7_Stop', false);">Dừng</button>
+               
+            <!--BƠm8 Open--> 
+            <button id="btt_scrManu_DC8_Run" onmousedown="socket.emit('cmd_Manu_DC8_Run', true);" onmouseup="socket.emit('cmd_Manu_DC8_Run', false);">Chạy</button>
+            <!--Bơm8 Close--> 
+            <button id="btt_scrManu_DC8_Stop" onmousedown="socket.emit('cmd_Manu_DC8_Stop', true);" onmouseup="socket.emit('cmd_Manu_DC8_Stop', false);">Dừng</button>
+               
+            <!--BƠm9 Open--> 
+            <button id="btt_scrManu_DC9_Run" onmousedown="socket.emit('cmd_Manu_DC9_Run', true);" onmouseup="socket.emit('cmd_Manu_DC9_Run', false);">Chạy</button>
+            <!--Bơm9 Close--> 
+            <button id="btt_scrManu_DC9_Stop" onmousedown="socket.emit('cmd_Manu_DC9_Stop', true);" onmouseup="socket.emit('cmd_Manu_DC9_Stop', false);">Dừng</button>
+      
+            <!--BƠm10 Open--> 
+            <button id="btt_scrManu_DC10_Run" onmousedown="socket.emit('cmd_Manu_DC10_Run', true);" onmouseup="socket.emit('cmd_Manu_DC10_Run', false);">Chạy</button>
+            <!--Bơm10 Close--> 
+            <button id="btt_scrManu_DC10_Stop" onmousedown="socket.emit('cmd_Manu_DC10_Stop', true);" onmouseup="socket.emit('cmd_Manu_DC10_Stop', false);">Dừng</button>
+
+
+
+            
+            <!-- //////////////Hiển thị dữ liệu IO field////////////// --> 
+            <!--Giá trị thực tế Bom1-->
+            <input id="tbx_act_DC_1_Manu" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_1", "tbx_act_DC_1_Manu", 0)</script>
+            <!--Giá trị thực tế Bom2-->
+            <input id="tbx_act_DC_2_Manu" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_2", "tbx_act_DC_2_Manu", 0)</script>
+            <!--Giá trị thực tế Bom3-->
+            <input id="tbx_act_DC_3_Manu" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_3", "tbx_act_DC_3_Manu", 0)</script>
+            <!--Giá trị thực tế Bom4-->
+            <input id="tbx_act_DC_4_Manu" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_4", "tbx_act_DC_4_Manu", 0)</script>
+            <!--Giá trị thực tế Bom5-->
+            <input id="tbx_act_DC_5_Manu" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_5", "tbx_act_DC_5_Manu", 0)</script>
+            <!--Giá trị thực tế Bom6-->
+            <input id="tbx_act_DC_6_Manu" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_6", "tbx_act_DC_6_Manu", 0)</script>
+            <!--Giá trị thực tế Bom7-->
+            <input id="tbx_act_DC_7_Manu" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_7", "tbx_act_DC_7_Manu", 0)</script>
+            <!--Giá trị thực tế Bom8-->
+            <input id="tbx_act_DC_8_Manu" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_8", "tbx_act_DC_8_Manu", 0)</script>
+            <!--Giá trị thực tế Bom9-->
+            <input id="tbx_act_DC_9_Manu" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_9", "tbx_act_DC_9_Manu", 0)</script>
+            <!--Giá trị thực tế Bom10-->
+            <input id="tbx_act_DC_10_Manu" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_DC_10", "tbx_act_DC_10_Manu", 0)</script>
+
+            <!--Giá trị thực tế CB_level-->
+            <input id="tbx_act_CB_level_Manu" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_CB_level", "tbx_act_CB_level_Manu",2)</script>
+            <!--Giá trị thực tế CB_pressure-->
+            <input id="tbx_act_CB_humidity_Manu" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_CB_humidity", "tbx_act_CB_humidity_Manu",2)</script>
+            <!--Giá trị thực tế CB_pressure-->
+            <input id="tbx_act_CB_pressure_Manu" disabled="disabled" type="text" /> 
+            <script>fn_IOFieldDataShow("Act_CB_pressure", "tbx_act_CB_pressure_Manu",2)</script>
+        </div> 
+    </body> 
+</html> 

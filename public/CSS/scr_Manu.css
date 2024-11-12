@@ -1,0 +1,564 @@
+/*Màn hình tự động*/
+#scr_Manu {
+    position: absolute;
+    left: 215px; top: 11px;
+    width: 1400px; height: 686px;
+    background-color: rgb(15, 228, 210);
+}
+
+.custom-image_Manu {
+    /* Kích thước */
+    width: 1320px; /* Đặt chiều rộng ảnh, thay đổi kích thước theo ý bạn */
+    height: 650; /* Giữ tỷ lệ khung hình của ảnh */
+    /* Canh lề */
+    margin-top: 20px; /* Khoảng cách phía trên */
+    margin-bottom: 20px; /* Khoảng cách phía dưới */
+    margin-left: auto; /* Căn giữa */
+    margin-right: auto; /* Căn giữa */
+    /* Canh chỉnh vị trí */
+    position: relative; /* Hoặc dùng absolute, fixed, sticky nếu muốn */
+    top: 0px; /* Đẩy ảnh xuống */
+    left: 15px; /* Đẩy ảnh sang phải */
+    /* Tùy chỉnh thêm */
+    
+}
+
+/*Bom 1*/
+#Sym_scrManu_Motor1 {
+    position: absolute;
+    left: 280px; top: 180px;
+    width: 150px; height: 100px;
+}
+/*Bom 2*/
+#Sym_scrManu_Motor2 {
+    position: absolute;
+    left: 500px; top: 180px;
+    width: 150px; height: 100px;
+}
+/*Bom 3*/
+#Sym_scrManu_Motor3 {
+    position: absolute;
+    left: 720px; top: 180px;
+    width: 150px; height: 100px;
+}
+/*Bom 4*/
+#Sym_scrManu_Motor4 {
+    position: absolute;
+    left: 940px; top: 180px;
+    width: 150px; height: 100px;
+}
+/*Bom 5*/
+#Sym_scrManu_Motor5 {
+    position: absolute;
+    left: 1160px; top: 180px;
+    width: 150px; height: 100px;
+}
+
+/*Bom 6*/
+#Sym_scrManu_Motor6 {
+    position: absolute;
+    left: 280px; top: 400px;
+    width: 150px; height: 100px;
+}
+/*Bom 7*/
+#Sym_scrManu_Motor7 {
+    position: absolute;
+    left: 500px; top: 400px;
+    width: 150px; height: 100px;
+}
+/*Bom 8*/
+#Sym_scrManu_Motor8 {
+    position: absolute;
+    left: 720px; top: 400px;
+    width: 150px; height: 100px;
+}
+/*Bom 9*/
+#Sym_scrManu_Motor9 {
+    position: absolute;
+    left: 940px; top: 400px;
+    width: 150px; height: 100px;
+}
+/*Bom 10*/
+#Sym_scrManu_Motor10 {
+    position: absolute;
+    left: 1160px; top: 400px;
+    width: 150px; height: 100px;
+}
+
+/*CB_level*/
+#Sym_scrManu_CB_level {
+    position: absolute;
+    left: 400px; top: 570px;
+    width: 40px; height: 80px;
+}
+/*CB_humidity*/
+#Sym_scrManu_CB_humidity{
+    position: absolute;
+    left: 700px; top: 570px;
+    width: 40px; height: 80px;
+}
+/*CB_pressure*/
+#Sym_scrManu_CB_pressure{
+    position: absolute;
+    left: 1000px; top: 570px;
+    width: 40px; height: 80px;
+}
+
+
+
+
+
+
+
+
+
+/*Nút Màn Tự Động*/ 
+
+#btt_scrManu_Auto { 
+
+    border: none; 
+    background-color: rgb(15, 233, 109); 
+    color: rgb(255, 255, 255); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 90px; height: 40px; 
+    left: 40px; top: 110px; 
+
+} 
+
+/*Nút Bằng tay*/ 
+
+#btt_scrManu_Manu { 
+
+    border: none; 
+    background-color: rgb(202, 240, 11); 
+    border: none; color: rgb(0, 0, 0); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 90px; height: 40px; 
+    left: 140px; top: 110px; 
+
+} 
+
+/*Nút Mô phỏng Relay1*/ 
+
+#btt_scrManu_Relay1 { 
+    border: none; 
+    background-color: rgb(255, 11, 11); 
+    border: none; color: rgb(0, 0, 0); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 90px; height: 40px; 
+    left: 140px; top: 200px; 
+
+} 
+/*Nút Mô phỏng Relay21*/ 
+#btt_scrManu_Relay2 { 
+    border: none; 
+    background-color: rgb(255, 0, 0); 
+    border: none; color: rgb(0, 0, 0); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 90px; height: 40px; 
+    left: 140px; top: 300px; 
+
+} 
+  
+
+/*Nút Bơm1 mở*/ 
+#btt_scrManu_DC_Run { 
+    border: none; 
+    background-color: rgb(11, 240, 49); 
+    border: none; color: rgb(210, 43, 43); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 290px; top: 150px; 
+}
+/*Nút Bơm1 đóng*/ 
+#btt_scrManu_DC_Stop { 
+    border: none; 
+    background-color: rgb(240, 11, 11); 
+    border: none; color: rgb(0, 0, 0); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 360px; top: 150px; 
+}
+
+
+/*Nút Bơm2 mở*/ 
+#btt_scrManu_DC2_Run { 
+    border: none; 
+    background-color: rgb(11, 240, 49); 
+    border: none; color: rgb(210, 43, 43); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 510px; top: 150px; 
+}
+/*Nút Bơm2 đóng*/ 
+#btt_scrManu_DC2_Stop { 
+    border: none; 
+    background-color: rgb(240, 11, 11); 
+    border: none; color: rgb(0, 0, 0); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 580px; top: 150px; 
+}
+
+/*Nút Bơm3 mở*/ 
+#btt_scrManu_DC3_Run { 
+    border: none; 
+    background-color: rgb(11, 240, 49); 
+    border: none; color: rgb(210, 43, 43); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 730px; top: 150px; 
+}
+/*Nút Bơm3 đóng*/ 
+#btt_scrManu_DC3_Stop { 
+    border: none; 
+    background-color: rgb(240, 11, 11); 
+    border: none; color: rgb(0, 0, 0); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 800px; top: 150px; 
+}
+
+/*Nút Bơm4 mở*/ 
+#btt_scrManu_DC4_Run { 
+    border: none; 
+    background-color: rgb(11, 240, 49); 
+    border: none; color: rgb(210, 43, 43); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 950px; top: 150px; 
+}
+/*Nút Bơm4 đóng*/ 
+#btt_scrManu_DC4_Stop { 
+    border: none; 
+    background-color: rgb(240, 11, 11); 
+    border: none; color: rgb(0, 0, 0); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 1020px; top: 150px; 
+}
+
+/*Nút Bơm5 mở*/ 
+#btt_scrManu_DC5_Run { 
+    border: none; 
+    background-color: rgb(11, 240, 49); 
+    border: none; color: rgb(210, 43, 43); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 1170px; top: 150px; 
+}
+/*Nút Bơm5 đóng*/ 
+#btt_scrManu_DC5_Stop { 
+    border: none; 
+    background-color: rgb(240, 11, 11); 
+    border: none; color: rgb(0, 0, 0); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 1240px; top: 150px; 
+}
+
+/*Nút Bơm6 mở*/ 
+#btt_scrManu_DC6_Run { 
+    border: none; 
+    background-color: rgb(11, 240, 49); 
+    border: none; color: rgb(210, 43, 43); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 290px; top: 370px; 
+}
+/*Nút Bơm6 đóng*/ 
+#btt_scrManu_DC6_Stop { 
+    border: none; 
+    background-color: rgb(240, 11, 11); 
+    border: none; color: rgb(0, 0, 0); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 360px; top: 370px; 
+}
+
+
+/*Nút Bơm7 mở*/ 
+#btt_scrManu_DC7_Run { 
+    border: none; 
+    background-color: rgb(11, 240, 49); 
+    border: none; color: rgb(210, 43, 43); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 510px; top: 370px; 
+}
+/*Nút Bơm7 đóng*/ 
+#btt_scrManu_DC7_Stop { 
+    border: none; 
+    background-color: rgb(240, 11, 11); 
+    border: none; color: rgb(0, 0, 0); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 580px; top: 370px; 
+}
+
+/*Nút Bơm8 mở*/ 
+#btt_scrManu_DC8_Run { 
+    border: none; 
+    background-color: rgb(11, 240, 49); 
+    border: none; color: rgb(210, 43, 43); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 730px; top: 370px; 
+}
+/*Nút Bơm8 đóng*/ 
+#btt_scrManu_DC8_Stop { 
+    border: none; 
+    background-color: rgb(240, 11, 11); 
+    border: none; color: rgb(0, 0, 0); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 800px; top: 370px; 
+}
+
+/*Nút Bơm9 mở*/ 
+#btt_scrManu_DC9_Run { 
+    border: none; 
+    background-color: rgb(11, 240, 49); 
+    border: none; color: rgb(210, 43, 43); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 950px; top: 370px; 
+}
+/*Nút Bơm9 đóng*/ 
+#btt_scrManu_DC9_Stop { 
+    border: none; 
+    background-color: rgb(240, 11, 11); 
+    border: none; color: rgb(0, 0, 0); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 1020px; top: 370px; 
+}
+
+/*Nút Bơm10 mở*/ 
+#btt_scrManu_DC10_Run { 
+    border: none; 
+    background-color: rgb(11, 240, 49); 
+    border: none; color: rgb(210, 43, 43); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 1170px; top: 370px; 
+}
+/*Nút Bơm10 đóng*/ 
+#btt_scrManu_DC10_Stop { 
+    border: none; 
+    background-color: rgb(240, 11, 11); 
+    border: none; color: rgb(0, 0, 0); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 13px; 
+    font-weight: normal; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 50px; height: 20px; 
+    left: 1240px; top: 370px; 
+}
+
+
+/*IO btt_DC_Tron_RunELD thưc thế */
+
+/*IO FIELD thưc thế */
+/*Thực tế 1*/
+#tbx_act_DC_1_Manu {
+    position: absolute;
+    left: 280px; top: 300px;
+    width: 80px; height: 20px;
+}
+/*Thực tế 2*/
+#tbx_act_DC_2_Manu {
+    position: absolute;
+    left: 500px; top: 300px;
+    width: 80px; height: 20px;
+}
+/*Thực tế 3*/
+#tbx_act_DC_3_Manu {
+    position: absolute;
+    left: 720px; top: 300px;
+    width: 80px; height: 20px;
+}
+/*Thực tế 4*/
+#tbx_act_DC_4_Manu {
+    position: absolute;
+    left: 940px; top: 300px;
+    width: 80px; height: 20px;
+}
+/*Thực tế 5*/
+#tbx_act_DC_5_Manu {
+    position: absolute;
+    left: 1160px; top: 300px;
+    width: 80px; height: 20px;
+}
+/*Thực tế 6*/
+#tbx_act_DC_6_Manu {
+    position: absolute;
+    left: 280px; top: 520px;
+    width: 80px; height: 20px;
+}
+/*Thực tế 7*/
+#tbx_act_DC_7_Manu {
+    position: absolute;
+    left: 500px; top: 520px;
+    width: 80px; height: 20px;
+}
+/*Thực tế 8*/
+#tbx_act_DC_8_Manu {
+    position: absolute;
+    left: 720px; top: 520px;
+    width: 80px; height: 20px;
+}
+/*Thực tế 9*/
+#tbx_act_DC_9_Manu {
+    position: absolute;
+    left: 940px; top: 520px;
+    width: 80px; height: 20px;
+}
+/*Thực tế 10*/
+#tbx_act_DC_10_Manu {
+    position: absolute;
+    left: 1160px; top: 520px;
+    width: 80px; height: 20px;
+}
+
+/*Thực tế CB_humidity*/
+#tbx_act_CB_humidity_Manu {
+    position: absolute;
+    left: 750px; top: 600px;
+    width: 80px; height: 20px;
+}
+
+/*Thực tế CB_level*/
+#tbx_act_CB_level_Manu {
+    position: absolute;
+    left: 450px; top: 600px;
+    width: 80px; height: 20px;
+}
+#tbx_act_CB_humidity_Manu {
+    position: absolute;
+    left: 750px; top: 600px;
+    width: 80px; height: 20px;
+}
+#tbx_act_CB_pressure_Manu {
+    position: absolute;
+    left: 1050px; top: 600px;
+    width: 80px; height: 20px;
+}
+

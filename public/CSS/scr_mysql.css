@@ -1,0 +1,111 @@
+/*Màn hình lịch sử*/
+#scr_mysql {
+    position: absolute;
+    left: 215px; top: 11px;
+    width: 1400px; height: 686px;
+    background-color: rgb(15, 228, 210);
+}
+
+.custom-image_SQL {
+    /* Kích thước */
+    width: 1320px; /* Đặt chiều rộng ảnh, thay đổi kích thước theo ý bạn */
+    height: 650; /* Giữ tỷ lệ khung hình của ảnh */
+    /* Canh lề */
+    margin-top: 20px; /* Khoảng cách phía trên */
+    margin-bottom: 20px; /* Khoảng cách phía dưới */
+    margin-left: auto; /* Căn giữa */
+    margin-right: auto; /* Căn giữa */
+    /* Canh chỉnh vị trí */
+    position: relative; /* Hoặc dùng absolute, fixed, sticky nếu muốn */
+    top: 0px; /* Đẩy ảnh xuống */
+    left: 15px; /* Đẩy ảnh sang phải */
+    /* Tùy chỉnh thêm */
+    
+}
+
+/*//////////////Hiển thị dữ liệu bảng 1 - Start/////////////////*/ 
+#div_Table_01 { 
+    position: absolute; 
+    left: 14px; top: 300px; 
+    width: 1250px; height: 230px; 
+    overflow-y: scroll; 
+} 
+/*Table*/ 
+#table_01 { 
+    position: absolute; 
+    width:100%; 
+} 
+#table_01 tr{ 
+    cursor: pointer; 
+} 
+#table_01 tr:hover{background-color: #ddd;} 
+#table_01   { overflow: auto; } 
+#table_01 thead th { position: sticky; top: 0;  } 
+/* Just common table stuff. Really. */ 
+#table_01  { border-collapse: collapse; width: 100%; } 
+#table_01 th, td { padding: 8px 16px; } 
+#table_01 th     { background:#eee; } 
+
+/*//////////////TRƯỜNG TÌM KIẾM DỮ LIỆU/////////////////*/ 
+
+/*Lable tìm kiếm từ*/ 
+#lb_Search_Start { 
+    color: rgb(26, 24, 24); 
+    font-size: 14px; 
+    font-weight: normal; 
+    position: absolute; 
+    left: 15px; top: 105px; 
+} 
+
+/*Chọn ngày tháng bắt đầu*/ 
+#dtpk_Search_Start { 
+    text-align: left; 
+    position: absolute; 
+    left: 15px; top: 125px; 
+} 
+
+/*Lable tìm kiếm đến*/ 
+#lb_Search_End { 
+    color: rgb(26, 24, 24); 
+    font-size: 14px; 
+    font-weight: normal; 
+    position: absolute; 
+    left: 15px; top: 155px; 
+} 
+
+/*Chọn ngày tháng kết thúc*/ 
+#dtpk_Search_End { 
+    text-align: left; 
+    position: absolute; 
+    left: 15px; top: 175px; 
+} 
+
+/*Nút tìm kiếm*/ 
+#btt_Search { 
+    border: none; 
+    background-color: DodgerBlue; 
+    color: rgb(255, 255, 255); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 11px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 105px; height: 30px; 
+    left: 127px; top: 210px; 
+}
+
+/*Nút Xuaast Excel*/ 
+#btt_Excel { 
+    border: none; 
+    background-color: rgb(14, 199, 153); 
+    color: rgb(255, 255, 255); 
+    text-align: center; 
+    display: inline-block; 
+    font-size: 11px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    position: absolute; 
+    width: 105px; height: 30px; 
+    left: 250px; top: 210px; 
+} 
